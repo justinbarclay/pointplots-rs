@@ -56,12 +56,26 @@ pub mod utils;
 
 use drawille::Canvas as BrailleCanvas;
 use scale::Scale;
-use std::cmp;
 use std::default::Default;
 use std::f32;
+use std::{cmp, fmt::Display};
+
+/// Trait alias for items that can be compared and Displayed
+pub trait Labelable: Into<f32> + Display + Clone {}
+
+impl Labelable for f32 {}
+
+pub struct Point<T: Labelable, U: Labelable> {
+    pub x: T,
+    pub y: U,
+}
 
 /// Controls the drawing.
-pub struct Chart<'a> {
+pub struct Chart<'a, T, U>
+where
+    T: Labelable,
+    U: Labelable,
+{
     /// Canvas width in points.
     width: u32,
     /// Canvas height in points.
@@ -75,38 +89,50 @@ pub struct Chart<'a> {
     /// Y-axis end value (calculated automatically to display all the domain values).
     ymax: f32,
     /// Collection of shapes to be presented on the canvas.
-    shapes: Vec<&'a Shape<'a>>,
+    shapes: Vec<&'a Shape<'a, Point<T, U>>>,
     /// Underlying canvas object.
     canvas: BrailleCanvas,
 }
 
 /// Specifies different kinds of plotted data.
-pub enum Shape<'a> {
+pub enum Shape<'a, Point> {
     /// Real value function.
     Continuous(Box<dyn Fn(f32) -> f32 + 'a>),
     /// Points of a scatter plot.
-    Points(&'a [(f32, f32)]),
+    Points(&'a [Point]),
     /// Points connected with lines.
-    Lines(&'a [(f32, f32)]),
+    Lines(&'a [Point]),
     /// Points connected in step fashion.
-    Steps(&'a [(f32, f32)]),
+    Steps(&'a [Point]),
     /// Points represented with bars.
-    Bars(&'a [(f32, f32)]),
+    Bars(&'a [Point]),
 }
 
 /// Provides an interface for drawing plots.
-pub trait Plot<'a> {
+pub trait Plot<'a, T, U>
+where
+    T: Labelable,
+    U: Labelable,
+{
     /// Draws a [line chart](https://en.wikipedia.org/wiki/Line_chart) of points connected by straight line segments.
-    fn lineplot(&'a mut self, shape: &'a Shape) -> &'a mut Chart;
+    fn lineplot(&'a mut self, shape: &'a Shape<Point<T, U>>) -> &'a mut Chart<'a, T, U>;
 }
 
-impl<'a> Default for Chart<'a> {
+impl<T, U> Default for Chart<'_, T, U>
+where
+    T: Labelable,
+    U: Labelable,
+{
     fn default() -> Self {
         Self::new(120, 60, -10.0, 10.0)
     }
 }
 
-impl<'a> Chart<'a> {
+impl<T, U> Chart<'_, T, U>
+where
+    T: Labelable,
+    U: Labelable,
+{
     /// Creates a new `Chart` object.
     ///
     /// # Panics
@@ -128,7 +154,7 @@ impl<'a> Chart<'a> {
             ymax: f32::NEG_INFINITY,
             width,
             height,
-            shapes: Vec::new(),
+            shapes: vec![],
             canvas: BrailleCanvas::new(width, height),
         }
     }
@@ -232,9 +258,11 @@ impl<'a> Chart<'a> {
                     .collect(),
                 Shape::Points(dt) | Shape::Lines(dt) | Shape::Steps(dt) | Shape::Bars(dt) => dt
                     .iter()
-                    .filter_map(|(x, y)| {
-                        let i = x_scale.linear(*x).round() as u32;
-                        let j = y_scale.linear(*y).round() as u32;
+                    .filter_map(|point| {
+                        let x: f32 = point.x.clone().into();
+                        let y: f32 = point.y.clone().into();
+                        let i = x_scale.linear(x).round() as u32;
+                        let j = y_scale.linear(y).round() as u32;
                         if i <= self.width && j <= self.height {
                             Some((i, self.height - j))
                         } else {
@@ -289,8 +317,12 @@ impl<'a> Chart<'a> {
     }
 }
 
-impl<'a> Plot<'a> for Chart<'a> {
-    fn lineplot(&'a mut self, shape: &'a Shape) -> &'a mut Chart {
+impl<'a, T, U> Plot<'a, T, U> for Chart<'a, T, U>
+where
+    T: Labelable,
+    U: Labelable,
+{
+    fn lineplot(&'a mut self, shape: &'a Shape<Point<T, U>>) -> &'a mut Chart<'a, T, U> {
         self.shapes.push(shape);
 
         // rescale ymin and ymax
@@ -310,9 +342,11 @@ impl<'a> Plot<'a> for Chart<'a> {
                 .collect(),
             Shape::Points(dt) | Shape::Lines(dt) | Shape::Steps(dt) | Shape::Bars(dt) => dt
                 .iter()
-                .filter_map(|(x, y)| {
-                    if *x >= self.xmin && *x <= self.xmax {
-                        Some(*y)
+                .filter_map(|point| {
+                    let x: f32 = point.x.clone().into();
+                    let y: f32 = point.y.clone().into();
+                    if x >= self.xmin && x <= self.xmax {
+                        Some(y)
                     } else {
                         None
                     }

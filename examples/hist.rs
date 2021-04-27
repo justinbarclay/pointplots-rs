@@ -1,7 +1,7 @@
-use textplots::{utils, Chart, Plot, Shape};
+use textplots::{utils, Chart, Plot, Point, Shape};
 
 fn main() {
-    let points = [
+    let data = [
         (0.0, 11.677842),
         (1.0, 9.36832),
         (2.0, 9.44862),
@@ -104,6 +104,7 @@ fn main() {
         (99.0, 9.720502),
     ];
 
+    let points: Vec<Point<f32, f32>> = utils::f32s_into_points(&data);
     println!("\ny = line plot");
     Chart::new(180, 60, 0.0, 100.0)
         .lineplot(&Shape::Lines(&points))
@@ -119,7 +120,7 @@ fn main() {
         .lineplot(&Shape::Bars(&points))
         .display();
 
-    let hist = utils::histogram(&points, 6.0, 15.0, 16);
+    let hist = utils::histogram(&data, 6.0, 15.0, 16);
     println!("\ny = histogram bars");
     Chart::new(180, 60, 6.0, 14.0)
         .lineplot(&Shape::Bars(&hist))
