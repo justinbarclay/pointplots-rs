@@ -58,10 +58,11 @@ use drawille::Canvas as BrailleCanvas;
 use scale::Scale;
 use std::default::Default;
 use std::f32;
+use std::any::type_name;
 use std::{cmp, fmt::Display};
 
 /// Trait alias for items that can be compared and Displayed
-pub trait Labelable: Into<f32> + Display + Clone {}
+pub trait Labelable: Into<f32> + From<f32> + Display + Clone {}
 
 impl Labelable for f32 {}
 
@@ -201,20 +202,34 @@ where
         let rows = frame.split('\n').count();
         for (i, row) in frame.split('\n').enumerate() {
             if i == 0 {
-                println!("{0} {1:.1}", row, self.ymax);
+                let ymax: U = self.ymax.into();
+                println!("{0} {1:.1}", row, ymax);
             } else if i == (rows - 1) {
-                println!("{0} {1:.1}", row, self.ymin);
+                let ymin: U = self.ymin.into();
+                println!("{0} {1:.1}", row, ymin);
             } else {
                 println!("{}", row);
             }
         }
 
-        println!(
+      let xmin: T = self.xmin.into();
+      let xmax: T = self.xmax.into();
+      if type_name::<T>() == type_name::<f32>(){
+                println!(
             "{0: <width$.1}{1:.1}",
             self.xmin,
             self.xmax,
-            width = (self.width as usize) / 2 - 3
+            width = (self.width as usize) / 2 - 3);
+      } else {
+      let label_lengths: usize =  xmin.to_string().len() + xmax.to_string().len();
+        println!(
+          "{0: <spacing$}{1:spacing$}{2:}",
+          xmin,
+          " ",
+          xmax,
+          spacing = (self.width as usize) / 2 - label_lengths
         );
+      }
     }
 
     /// Prints canvas content with some additional visual elements (like borders).

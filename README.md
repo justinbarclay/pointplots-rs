@@ -1,4 +1,8 @@
-# textplots [![Crates.io](https://img.shields.io/crates/v/textplots.svg)](https://crates.io/crates/textplots) [![Build Status](https://travis-ci.org/loony-bean/textplots-rs.svg?branch=master)](https://travis-ci.org/loony-bean/textplots-rs)
+> A fork of textplot-rs that allows you to customize the display of your labels for any T, U
+>
+> This works by operating over Point<T,U> where T/U implement  Display, Into<f32>, From<f32>, Clone
+
+# pointplot
 
 Terminal plotting library for using in Rust CLI applications.
 Should work well in any unicode terminal with monospaced font.
