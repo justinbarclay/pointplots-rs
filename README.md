@@ -1,7 +1,8 @@
 > A fork of textplot-rs that allows you to customize the display of your labels for any T, U
 >
-> This works by operating over Point<T,U> where T/U implement  Display, Into<f32>, From<f32>, Clone
-
+> This works by operating over Point<T,U> where T/U implement  Display, Into<f64>, From<f64>, Clone
+> 
+> Additionally, this now assumes that each line is associated with a PixelColor to help add detail and visually separate out each plotted line.
 # pointplot
 
 Terminal plotting library for using in Rust CLI applications.

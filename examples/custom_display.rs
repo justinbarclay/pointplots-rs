@@ -1,9 +1,9 @@
 use core::fmt;
 
-use textplots::{utils, Chart, Labelable, Plot, Point, Shape};
+use pointplots::{utils, Chart, PixelColor, Plot, Point, Shape};
 
 #[derive(Clone)]
-struct Temp(f32);
+struct Temp(f64);
 
 #[derive(Clone)]
 enum Month {
@@ -46,7 +46,7 @@ impl fmt::Display for Month {
     }
 }
 
-impl From<Month> for f32 {
+impl From<Month> for f64 {
     fn from(month: Month) -> Self {
         match month {
             Month::January => 0.,
@@ -65,8 +65,8 @@ impl From<Month> for f32 {
     }
 }
 
-impl From<f32> for Month {
-    fn from(number: f32) -> Self {
+impl From<f64> for Month {
+    fn from(number: f64) -> Self {
         match number.floor() as u32 {
             0 => Month::January,
             1 => Month::Febuary,
@@ -85,23 +85,20 @@ impl From<f32> for Month {
     }
 }
 
-impl From<Temp> for f32 {
+impl From<Temp> for f64 {
     fn from(temp: Temp) -> Self {
         temp.0
     }
 }
 
-impl From<f32> for Temp {
-    fn from(number: f32) -> Self {
+impl From<f64> for Temp {
+    fn from(number: f64) -> Self {
         Temp(number)
     }
 }
 
-impl Labelable for Month {}
-impl Labelable for Temp {}
-
 fn main() {
-    let data = [
+    let edmonton_temperatures = [
         (Month::January, Temp(-8.0)),
         (Month::Febuary, Temp(-8.0)),
         (Month::March, Temp(-3.0)),
@@ -115,7 +112,32 @@ fn main() {
         (Month::November, Temp(-4.0)),
         (Month::December, Temp(-10.0)),
     ];
-    let points: Vec<Point<Month, Temp>> = data
+
+    let calgary_temperatures = [
+        (Month::January, Temp(-8.0)),
+        (Month::Febuary, Temp(-7.4)),
+        (Month::March, Temp(-2.7)),
+        (Month::April, Temp(3.1)),
+        (Month::May, Temp(9.)),
+        (Month::June, Temp(13.2)),
+        (Month::July, Temp(16.8)),
+        (Month::August, Temp(15.8)),
+        (Month::September, Temp(10.6)),
+        (Month::October, Temp(3.8)),
+        (Month::November, Temp(-3.)),
+        (Month::December, Temp(-8.4)),
+    ];
+    let edmonton_points: Vec<Point<Month, Temp>> = edmonton_temperatures
+        .into_iter()
+        .map(|(x, y)| -> Point<Month, Temp> {
+            Point {
+                x: x.clone(),
+                y: y.clone(),
+            }
+        })
+        .collect();
+
+    let calgary_points: Vec<Point<Month, Temp>> = calgary_temperatures
         .into_iter()
         .map(|(x, y)| -> Point<Month, Temp> {
             Point {
@@ -127,6 +149,22 @@ fn main() {
 
     println!("\nMean Monthly Temperature in Edmonton, Alberta\n");
     Chart::<'_, Month, Temp>::new(120, 60, 0., 11.0)
-        .lineplot(&Shape::Lines(&points))
+        .lineplot(&Shape::Lines(&edmonton_points))
         .display();
+
+    /// With labels
+    println!("\nMean Monthly Temperature in Edmonton, Alberta\n");
+    let mut chart = Chart::<'_, Month, Temp>::new(120, 60, 0., 11.0);
+    chart
+        .lineplot_with_tags(
+            &Shape::Lines(&edmonton_points),
+            Some("Edmonton".to_string()),
+            PixelColor::Blue,
+        )
+        .lineplot_with_tags(
+            &Shape::Lines(&calgary_points),
+            Some("Calgary".to_string()),
+            PixelColor::Red,
+        )
+        .nice();
 }

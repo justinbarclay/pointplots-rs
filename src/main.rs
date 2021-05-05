@@ -1,6 +1,6 @@
+use pointplots::{Chart, PixelColor, Plot, Shape};
 use std::process::exit;
 use structopt::StructOpt;
-use textplots::{Chart, Plot, Shape};
 
 #[derive(StructOpt)]
 struct Opt {
@@ -9,10 +9,10 @@ struct Opt {
     formula: String,
     /// X-axis start value.
     #[structopt(long, default_value = "-10.0")]
-    xmin: f32,
+    xmin: f64,
     /// X-axis end value.
     #[structopt(long, default_value = "10.0")]
-    xmax: f32,
+    xmax: f64,
     /// Canvas width in points.
     #[structopt(short, long, default_value = "180")]
     width: u32,
@@ -40,7 +40,7 @@ fn main() {
     };
 
     println!("y = {}", opt.formula);
-    Chart::<'_, f32, f32>::new(opt.width, opt.height, opt.xmin, opt.xmax)
-        .lineplot(&Shape::Continuous(Box::new(|x| func(x.into()) as f32)))
+    Chart::<'_, f64, f64>::new(opt.width, opt.height, opt.xmin, opt.xmax)
+        .lineplot(&Shape::Continuous(Box::new(|x| func(x.into()) as f64)))
         .display();
 }

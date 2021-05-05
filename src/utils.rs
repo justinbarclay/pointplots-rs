@@ -13,10 +13,10 @@ use crate::Point;
 /// assert_eq!(vec![(0.0, 1.0), (5.0, 1.0)], histogram( &[ (0.0, 0.0), (9.0, 9.0), (10.0, 10.0) ], 0.0, 10.0, 2 ));
 /// ```
 
-pub fn histogram(data: &[(f32, f32)], min: f32, max: f32, bins: usize) -> Vec<Point<f32, f32>> {
+pub fn histogram(data: &[(f64, f64)], min: f64, max: f64, bins: usize) -> Vec<Point<f64, f64>> {
     let mut output = vec![0; bins];
 
-    let step = (max - min) / bins as f32;
+    let step = (max - min) / bins as f64;
 
     for &(_x, y) in data.iter() {
         if y < min || y > max {
@@ -32,17 +32,17 @@ pub fn histogram(data: &[(f32, f32)], min: f32, max: f32, bins: usize) -> Vec<Po
     output
         .into_iter()
         .enumerate()
-        .map(|(x, y)| -> Point<f32, f32> {
+        .map(|(x, y)| -> Point<f64, f64> {
             Point {
-                x: (min + (x as f32) * step),
-                y: y as f32,
+                x: (min + (x as f64) * step),
+                y: y as f64,
             }
         })
         .collect()
 }
 
-pub fn f32s_into_points(data: &[(f32, f32)]) -> Vec<Point<f32, f32>> {
+pub fn f64s_into_points(data: &[(f64, f64)]) -> Vec<Point<f64, f64>> {
     data.into_iter()
-        .map(|(x, y)| -> Point<f32, f32> { Point { x: *x, y: *y } })
+        .map(|(x, y)| -> Point<f64, f64> { Point { x: *x, y: *y } })
         .collect()
 }

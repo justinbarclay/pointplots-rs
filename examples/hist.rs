@@ -1,4 +1,4 @@
-use textplots::{utils, Chart, Plot, Point, Shape};
+use pointplots::{utils, Chart, PixelColor, Plot, Point, Shape};
 
 fn main() {
     let data = [
@@ -104,7 +104,7 @@ fn main() {
         (99.0, 9.720502),
     ];
 
-    let points: Vec<Point<f32, f32>> = utils::f32s_into_points(&data);
+    let points: Vec<Point<f64, f64>> = utils::f64s_into_points(&data);
     println!("\ny = line plot");
     Chart::new(180, 60, 0.0, 100.0)
         .lineplot(&Shape::Lines(&points))

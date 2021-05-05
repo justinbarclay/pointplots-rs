@@ -1,27 +1,25 @@
 [package]
-name = "textplots"
-description = "Terminal plotting library."
+name = "pointplots"
+description = "Generic plotting library for the terminal."
 version = "0.6.0"
-authors = ["Alexey Suslov <alexey.suslov@gmail.com>"]
+authors = ["Alexey Suslov <alexey.suslov@gmail.com>", "Justin Barclay <justincbarclay@gmail>"]
 license = "MIT"
-repository = "https://github.com/loony-bean/textplots-rs"
+repository = "https://github.com/justinbarclay/pointplots-rs"
 keywords = ["plotting", "unicode", "charts"]
 categories = ["visualization"]
 readme = "README.md"
 edition = "2018"
 
 [lib]
-name = "textplots"
+name = "pointplots"
 path = "src/lib.rs"
 
 [[bin]]
-name = "textplots"
+name = "pointplots"
 path = "src/main.rs"
 
-[badges]
-travis-ci = { repository = "loony-bean/textplots-rs", branch = "master" }
-
 [dependencies]
-drawille = "0.2.3"
+drawille = "0.3.0"
 structopt = "0.3"
 meval = "0.2"
+colored = "2"
