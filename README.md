@@ -9,7 +9,7 @@ A terminal plotting library for using in Rust CLI applications. This should work
 
 It is inspired by [textplot](https://github.com/loony-bean/textplots-rs) which is inspired from [TextPlots.jl](https://github.com/sunetos/TextPlots.jl) which is inspired by [Drawille](https://github.com/asciimoo/drawille).
 
-Currently it features only drawing line charts on Braille canvas, but could be extended to support other canvas and chart types just like [UnicodePlots.jl](https://github.com/Evizero/UnicodePlots.jl) or another cool terminal plotting library.
+Currently it features only drawing line charts on Braille canvas, adding labels to the bottom of charts, coloring lines, and adding axis labels through the display trait. It could be extended to support other canvas and chart types just like [UnicodePlots.jl](https://github.com/Evizero/UnicodePlots.jl) or another cool terminal plotting library.
 
 Contributions are very much welcome!
 
@@ -18,7 +18,7 @@ Contributions are very much welcome!
 ## Using as a library
 
 ```rust
-use pointplot::{Chart, Plot, Shape};
+use pointplotss::{Chart, Plot, Shape};
 
 fn main() {
     println!("y = sin(x) / x");
@@ -34,7 +34,7 @@ fn main() {
 ## Using as a binary
 
 ```sh
-$ textplots '10*x + x^2 + 10*sin(x)*abs(x)' --xmin=-20 --xmax=20
+$ pointplots '10*x + x^2 + 10*sin(x)*abs(x)' --xmin=-20 --xmax=20
 ```
 
 <img src="https://raw.githubusercontent.com/loony-bean/textplots-rs/master/doc/demo4.png">
