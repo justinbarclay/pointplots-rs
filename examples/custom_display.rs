@@ -1,6 +1,6 @@
 use core::fmt;
 
-use pointplots::{utils, Chart, PixelColor, Plot, Point, Shape};
+use pointplots::{Chart, PixelColor, Plot, Point, Shape};
 
 #[derive(Clone)]
 struct Temp(f64);
@@ -128,7 +128,7 @@ fn main() {
         (Month::December, Temp(-8.4)),
     ];
     let edmonton_points: Vec<Point<Month, Temp>> = edmonton_temperatures
-        .into_iter()
+        .iter()
         .map(|(x, y)| -> Point<Month, Temp> {
             Point {
                 x: x.clone(),
@@ -138,7 +138,7 @@ fn main() {
         .collect();
 
     let calgary_points: Vec<Point<Month, Temp>> = calgary_temperatures
-        .into_iter()
+        .iter()
         .map(|(x, y)| -> Point<Month, Temp> {
             Point {
                 x: x.clone(),
@@ -152,7 +152,7 @@ fn main() {
         .lineplot(&Shape::Lines(&edmonton_points))
         .display();
 
-    /// With labels
+    // With labels
     println!("\nMean Monthly Temperature in Edmonton, Alberta\n");
     let mut chart = Chart::<'_, Month, Temp>::new(120, 60, 0., 11.0);
     chart

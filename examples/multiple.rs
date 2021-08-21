@@ -5,14 +5,8 @@ fn main() {
     // https://github.com/loony-bean/textplots-rs/issues/8
     println!("y = -x^2; y = x^2");
     Chart::<'_, f64, f64>::default()
-        .lineplot(&Shape::Continuous(
-            Box::new(|x| (-x.powf(2.0))),
-            PixelColor::BrightCyan,
-        ))
-        .lineplot(&Shape::Continuous(
-            Box::new(|x| (x.powf(2.0))),
-            PixelColor::BrightBlack,
-        ))
+        .lineplot(&Shape::Continuous(Box::new(|x| (-x.powf(2.0)))))
+        .lineplot(&Shape::Continuous(Box::new(|x| (x.powf(2.0)))))
         .display();
 
     // https://github.com/loony-bean/textplots-rs/issues/15
@@ -57,8 +51,8 @@ fn main() {
 
     println!("\nf(x)=x; f(x)=x+1; f(x)=x+2");
     Chart::new(120, 80, -2., 2.)
-        .lineplot_with_tags(&Shape::Lines(l4.as_slice(), None, PixelColor::Yellow))
-        .lineplot_with_tags(&Shape::Lines(l5.as_slice(), None, PixelColor::Red))
-        .lineplot_with_tags(&Shape::Lines(l6.as_slice(), None, PixelColor::Green))
+        .lineplot_with_tags(&Shape::Lines(l4.as_slice()), None, PixelColor::Yellow)
+        .lineplot_with_tags(&Shape::Lines(l5.as_slice()), None, PixelColor::Red)
+        .lineplot_with_tags(&Shape::Lines(l6.as_slice()), None, PixelColor::Green)
         .nice();
 }

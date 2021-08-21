@@ -1,4 +1,4 @@
-use pointplots::{Chart, PixelColor, Plot, Shape};
+use pointplots::{Chart, Plot, Shape};
 use std::process::exit;
 use structopt::StructOpt;
 

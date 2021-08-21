@@ -5,14 +5,11 @@
 > Additionally, this now assumes that each line is associated with a PixelColor to help add detail and visually separate out each plotted line.
 # pointplot
 
-Terminal plotting library for using in Rust CLI applications.
-Should work well in any unicode terminal with monospaced font.
+A terminal plotting library for using in Rust CLI applications. This should work well in any unicode terminal with monospaced font.
 
-It is inspired by [TextPlots.jl](https://github.com/sunetos/TextPlots.jl) which is inspired by [Drawille](https://github.com/asciimoo/drawille).
+It is inspired by [textplot](https://github.com/loony-bean/textplots-rs) which is inspired from [TextPlots.jl](https://github.com/sunetos/TextPlots.jl) which is inspired by [Drawille](https://github.com/asciimoo/drawille).
 
-Currently it features only drawing line charts on Braille canvas, but could be extended
-to support other canvas and chart types just like [UnicodePlots.jl](https://github.com/Evizero/UnicodePlots.jl)
-or another cool terminal plotting library.
+Currently it features only drawing line charts on Braille canvas, but could be extended to support other canvas and chart types just like [UnicodePlots.jl](https://github.com/Evizero/UnicodePlots.jl) or another cool terminal plotting library.
 
 Contributions are very much welcome!
 
@@ -21,7 +18,7 @@ Contributions are very much welcome!
 ## Using as a library
 
 ```rust
-use textplots::{Chart, Plot, Shape};
+use pointplot::{Chart, Plot, Shape};
 
 fn main() {
     println!("y = sin(x) / x");

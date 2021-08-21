@@ -9,8 +9,8 @@ use crate::Point;
 /// falls into the specified interval is grouped into `bins` number of buckets of equal width.
 ///
 /// ```
-/// # use textplots::utils::histogram;
-/// assert_eq!(vec![(0.0, 1.0), (5.0, 1.0)], histogram( &[ (0.0, 0.0), (9.0, 9.0), (10.0, 10.0) ], 0.0, 10.0, 2 ));
+/// # use pointplots::{utils::histogram, Point};
+/// assert_eq!(vec![Point {x: 0.0, y: 1.0}, Point {x: 5.0, y: 1.0}], histogram( &[ (0.0, 0.0), (9.0, 9.0), (10.0, 10.0) ], 0.0, 10.0, 2 ));
 /// ```
 
 pub fn histogram(data: &[(f64, f64)], min: f64, max: f64, bins: usize) -> Vec<Point<f64, f64>> {

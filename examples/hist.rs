@@ -1,4 +1,4 @@
-use pointplots::{utils, Chart, PixelColor, Plot, Point, Shape};
+use pointplots::{utils, Chart, Plot, Point, Shape};
 
 fn main() {
     let data = [
